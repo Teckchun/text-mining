@@ -10,19 +10,27 @@ import java.sql.Date;
  */
 public class Board {
 
-
-
-    @JsonProperty("board_view")
+    //@JsonProperty("board_view")
     private int boardView;
 
-    @JsonProperty("board_title")
+    //@JsonProperty("board_title")
     private String boardTitle;
 
-    @JsonProperty("board_recommand")
+    //@JsonProperty("board_recommand")
     private String boardRecommand;
 
-    @JsonProperty("insert_date")
+    //@JsonProperty("insert_date")
     private Date insertDate;
+
+    private String type;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public int getBoardView() {
         return boardView;

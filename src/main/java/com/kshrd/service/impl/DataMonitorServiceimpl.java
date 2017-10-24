@@ -23,4 +23,11 @@ public class DataMonitorServiceimpl implements DataMonitorService {
 
         return dataMonitorRepository.getBoards(boardTitle,startDate,endDate);
     }
+
+
+
+    public ArrayList<Board> getBoardsByType(String boardTitle, String startDate, String endDate, String type){
+        return dataMonitorRepository.getBoardByType(boardTitle,startDate,endDate,type);
+    }
+
 }
