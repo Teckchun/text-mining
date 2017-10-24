@@ -14,6 +14,10 @@
     <!--<link rel="stylesheet" th:href="@{/css/style.css}"/>-->
     <!--<link rel="stylesheet" th:href="@{/css/loading.css}"/>-->
     <!-- trend graph -->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+  <script src="http://cdn.oesmith.co.uk/morris-0.4.1.min.js"></script>
+<
     <link rel="stylesheet" th:href="@{/css/trend-graph.css}"/>
     <link rel="stylesheet" th:href="@{/css/tree-graph.css}"/>
     <!--highchart-->
@@ -212,12 +216,12 @@
                     <div class="row mx-auto text-center">
                         <!-- <img src="./images/dashboard-line-graph.png" class="rounded img-fluid mx-auto" alt=""> -->
 
-                       <div class="col-4 mx-auto">
+                       <div class="col-md-4">
                            <!--<div id="trend" style="border: 1px solid black;-->
 <!--width: 120%;" >-->
                            <!--</div>-->
                            <h5>[검색어 추이]</h5>
-                           <div id="container" style="min-width: 310px; height: 400px; max-width: 600px;
+                           <div id="container" style="min-width: 560px; height: 400px; max-width: 700px;
                            margin: 0 auto"></div>
 
 
@@ -306,13 +310,11 @@
             data = res.data;
 
 
+
         },function(){
             constructTable(data);
+
         });
-
-
-
-
 
     });
     function constructTable(data, mytype){
@@ -333,9 +335,75 @@
                  </tr>
                 `);
             }
+  			
+            var rows = data;
+
+            var occurences = rows.reduce(function (r, row) {
+                r[row.insertDate] = ++r[row.insertDate] || 1;
+                return r;
+            }, {});
+
+            var result = Object.keys(occurences).map(function (key) {
+                return { key: key, value: occurences[key] };
+            });
+
+            
+            
+		container.innerHTML='';
+	
+	 		Morris.Line({
+									// ID of the element in which to
+									// draw the chart.
+									element : 'container',
+
+									// Chart data records -- each
+									// entry in this array
+									// corresponds to a point
+									// on the chart.
+									data : result,
+
+									// The name of the data record
+									// attribute that contains
+									// x-values.
+									xkey : [ 'key' ],
+
+									// A list of names of data
+									// record attributes that
+									// contain y-values.
+									ykeys : [ 'value' ],
+									xmin : 1,
+									xmax : 12,
+									// Labels for the ykeys -- will
+									// be displayed when you hover
+									// over the
+									// chart.
+									labels : [ '검색건수' ],
+
+									xLabels : [ '날짜' ],
+									lineColors : [ '#0b62a4' ],
+									parseTime : false,
+
+									// Disables line smoothing
+									smooth : true,
+									resize : true
+								});
+ 
 
 
+  			
+            var rows = data;
 
+            var occurences2 = rows.reduce(function (r, row) {
+                r[row.type] = ++r[row.type] || 1;
+                return r;
+            }, {});
+
+            var result2 = Object.keys(occurences2).map(function (key) {
+                return { key: key, value: occurences2[key] };
+            });
+            
+            console.log(result2)
+	 		
     }
 
 
@@ -382,65 +450,7 @@
 <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
 <!--<script th:src="@{/js/loading.js}"></script>-->
 <script>
-    // highchart
-
-    Highcharts.chart('container', {
-        chart: {
-            type: 'spline',
-            inverted: true
-        },
-        title: {
-            text: ''
-        },
-        subtitle: {
-            text: ''
-        },
-        xAxis: {
-            reversed: false,
-            title: {
-                enabled: true,
-                text: '검색건수'
-            },
-            labels: {
-                formatter: function () {
-                    return this.value ;
-                }
-            },
-            maxPadding: 0.05,
-            showLastLabel: true
-        },
-        yAxis: {
-            title: {
-                text: '날짜'
-            },
-            labels: {
-                formatter: function () {
-                    return this.value ;
-                }
-            },
-            lineWidth: 2
-        },
-        legend: {
-            enabled: false
-        },
-        tooltip: {
-            headerFormat: '<b>{series.name}</b><br/>',
-            pointFormat: '{point.x} km: {point.y}°C'
-        },
-        plotOptions: {
-            spline: {
-                marker: {
-                    enable: false
-                }
-            }
-        },
-        series: [{
-            name: 'Temperature',
-            data: [[0, 15], [10, -50], [20, -56.5], [30, -46.5], [40, -22.1],
-                [50, -2.5], [60, -27.7], [70, -55.7], [80, -76.5]]
-        }]
-    });
-</script>
+ </script>
 </body>
 
 </html>
