@@ -17,6 +17,13 @@ public class DataMonitorViewController {
     }
 
 
+    @GetMapping("/advanced-search")
+    public String advancedSearch(){
+
+        return "/advanced-search";
+    }
+
+
 
 
 }

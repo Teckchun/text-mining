@@ -143,12 +143,12 @@
                             <div class="form-group">
                                  <h3><span class="badge badge-pill badge-default">기간설정</span></h3>
                                  <div class="input-group date">
-                                 <input type="text" class="form-control" id="datepicker-start" placeholder="YYYY/MM/DD">
-                                     <input type="text" class="form-control" id="datepicker-end" placeholder="YYYY/MM/DD">
+                                 <input type="text" class="form-control" id="datepicker-start" value="2017-10-11" placeholder="YYYY/MM/DD">
+                                     <input type="text" class="form-control" id="datepicker-end" value="2017-10-22" placeholder="YYYY/MM/DD">
                             </div>
 
                         <img src="../images/calendar.png" alt="">
-                        <input id="txtSearch" class="form-control mr-sm-2" text="갤럭시 노트 8" type="text" placeholder="Search" aria-label="Search">
+                        <input id="txtSearch" class="form-control mr-sm-2" value="갤s7" type="text" placeholder="Search" aria-label="Search">
                         <button class="btn btn-outline-danger my-2 my-sm-0" type="submit" id="btnSearch">Search</button>
                     </form>
 
@@ -167,10 +167,10 @@
             <thead class="thead-inverse">
             <tr>
                 <th scope="row"><a href="" id="all">전체</a></th>
-                <th scope="row"><a href="" id="ppumppo">뽐뿌</a></th>
-                <th scope="row"><a href="">디시인사이드</a></th>
-                <th scope="row"><a href="">지후맘</a></th>
-                <th scope="row"><a href="">맘스홀릭</a></th>
+                <th scope="row"><a href="" id="ppomppu">뽐뿌</a></th>
+                <th scope="row"><a href="" id="dcinside">디시인사이드</a></th>
+                <th scope="row"><a href="" id="momcafe">지후맘</a></th>
+
             </tr>
             </thead>
         </tr>
@@ -180,7 +180,7 @@
             <thead class="thead-inverse">
 
             <tr>
-                <th>구분</th>
+
                 <th>콘텐츠</th>
                 <th>조회수</th>
                 <th>댓글수</th>
@@ -188,36 +188,7 @@
             </tr>
             </thead>
             <tbody id="searchResultData">
-            <!--<tr>-->
-                <!--<th scope="row"><a href="">전체</a></th>-->
-                <!--<td></td>-->
-                <!--<td></td>-->
-                <!--<td></td>-->
-            <!--</tr>-->
-            <!--<tr>-->
-                <!--<th scope="row"><a href="">뽐뿌</a></th>-->
-                <!--<td></td>-->
-                <!--<td></td>-->
-                <!--<td></td>-->
-            <!--</tr>-->
-            <!--<tr>-->
-                <!--<th scope="row"><a href="">디시인사이드</a></th>-->
-                <!--<td></td>-->
-                <!--<td></td>-->
-                <!--<td></td>-->
-            <!--</tr>-->
-            <!--<tr>-->
-                <!--<th scope="row"><a href="">지후맘</a></th>-->
-                <!--<td></td>-->
-                <!--<td></td>-->
-                <!--<td></td>-->
-            <!--</tr>-->
-            <!--<tr>-->
-                <!--<th scope="row"><a href="">맘스홀릭</a></th>-->
-                <!--<td></td>-->
-                <!--<td></td>-->
-                <!--<td></td>-->
-            <!--</tr>-->
+
             </tbody>
         </table>
     </div>
@@ -227,8 +198,6 @@
 
 
             <div class="col-9  mx-auto" id="issue-summary">
-
-
 
                 <!-- line graph -->
                 <!-- Result Info -->
@@ -334,50 +303,72 @@
 
         }).done(function(res) {
             console.log(res);
-            for(var i=0; i<res.data.length; i++){
-                console.log(res.data[i]);
-                $("#searchResultData").append(`
-                <tr>
-                    <th scope="row"><a href="">${res.data[i].boardTitle}</a></th>
-                    <td>${res.data[i].boardView}</td>
-                    <td>${res.data[i].boardRecommand}</td>
-                    <td>${res.data[i].insertDate}</td>
-                 </tr>
-                `);
-
-            }
-
-            data.push(res.data);
+            data = res.data;
 
 
+        },function(){
+            constructTable(data);
         });
 
 
 
 
 
-    })
-
-    $("#ppumppo").click(function(e){
-
-        e.preventDefault();
-        for(var i =0 ; i<data.length; i++){
-
-            console.log(data.data.type)
-            ppumppo.push(data.data);
-        }
-
-        console.log("ppumppo=> ",ppumppo)
-        $("#searchResultData").append(`
+    });
+    function constructTable(data, mytype){
+        $("#searchResultData").html("");
+        console.log(mytype);
+            for(var i=0; i<data.length; i++){
+                console.log(data[i].type);
+                if(mytype!=null && data[i].type!=mytype){
+                    continue;
+                }
+                $("#searchResultData").append(`
                 <tr>
-                    <th scope="row"><a href="">${ppumppo.boardTitle}</a></th>
-                    <td>${ppumppo.boardView}</td>
-                    <td>${ppumppo.boardRecommand}</td>
-                    <td>${ppumppo.insertDate}</td>
+                    <th scope="row"><a href="">${data[i].boardTitle}</a></th>
+                    <td>${data[i].boardView}</td>
+                    <td>${data[i].boardRecommand}</td>
+                    <td>${data[i].insertDate}</td>
+                    <td>${data[i].type}</td>
                  </tr>
                 `);
+            }
+
+
+
+    }
+
+
+
+    $("#ppomppu").click(function(e){
+
+        e.preventDefault();
+        constructTable(data, "ppomppu");
 
     })
+
+    $("#dcinside").click(function(e){
+
+        e.preventDefault();
+        constructTable(data, "dcinside");
+
+    })
+    $("#momcafe").click(function(e){
+
+        e.preventDefault();
+        constructTable(data, "momcafe");
+
+    })
+
+
+    $("#all").click(function(e){
+
+        e.preventDefault();
+        constructTable(data);
+
+    })
+
+
 
 
 

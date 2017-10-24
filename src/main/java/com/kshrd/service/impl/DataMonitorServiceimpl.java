@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Teckchun on 10/24/17.
@@ -25,9 +27,8 @@ public class DataMonitorServiceimpl implements DataMonitorService {
     }
 
 
-
-    public ArrayList<Board> getBoardsByType(String boardTitle, String startDate, String endDate, String type){
-        return dataMonitorRepository.getBoardByType(boardTitle,startDate,endDate,type);
+    @Override
+    public List<Map<String, Object>> getBoardContent(String productName, String contentLike, String excludeOne, String excludeTwo, String excludeThree) {
+        return dataMonitorRepository.getBoardContent(productName,contentLike,excludeOne,excludeTwo,excludeThree);
     }
-
 }

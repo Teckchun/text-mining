@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Teckchun on 10/24/17.
@@ -45,36 +46,34 @@ public interface DataMonitorRepository {
             @Param("start_date") String startDate,
             @Param("end_date") String endDate);
 
-    final String GET_BOARDS_BY_TYPE = "select board_title,board_view,board_recommand,insert_date,'ppomppu' as type from ppomppu_list a" +
-            " where a.board_title " +
-            " like concat('%',#{board_title},'%')  " +
-            " and (a.insert_date >=#{start_date} and a.insert_date <=#{end_date}) " +
-            " and type=#{type}" +
-            " union " +
-            " select board_title,board_view,board_recommand,insert_date,'dcinside' as type from dcinside_list b" +
-            " where b.board_title " +
-            " like concat('%',#{board_title},'%') and  (b.insert_date >= #{start_date} and b.insert_date <=#{end_date})" +
-            " and type=#{type}" +
-            " union " +
-            " select board_title,board_view,board_recommand,insert_date,'momcafe' as type from momcafe_list c " +
-            " where c.board_title " +
-            " like concat('%',#{board_title},'%') and  (c.insert_date >= #{start_date} and c.insert_date <=#{end_date})" +
-            " type=#{type}" +
-            " ";
 
-    @Select(GET_BOARDS_BY_TYPE)
-    @Results(value={
-            @Result(property="boardTitle",column="board_title"),
-            @Result(property="boardView",column="board_view"),
-            @Result(property="boardRecommand",column="board_recommand"),
-            @Result(property="insertDate",column="insert_date"),
-            @Result(property="type",column="type")
-    })
-    public ArrayList<Board> getBoardByType(
-            @Param("board_title") String boardTitle,
-            @Param("start_date") String startDate,
-            @Param("end_date") String endDate,
-            @Param("type") String type);
+
+
+    @Select("select * " +
+            "from ppomppu_contents a join product_synonym_dic b on a.content like concat('%',b.product_synonym,'%') " +
+            "where b.product_name=#{product_name} " +
+            "and a.content like concat('%',#{content_like},'%') " +
+            "and a.content not like concat('%',#{exclude_one},'%')" +
+            " and a.content not like concat('%',#{exclude_two},'%') " +
+            "and a.content not like concat('%',#{exclude_three},'%')")
+    public  List<Map<String,Object>> getBoardContent(
+            @Param("product_name") String productName,
+            @Param("content_like") String contentLike,
+            @Param("exclude_one") String excludeOne,
+            @Param("exclude_two") String excludeTwo,
+            @Param("exclude_three") String excludeThree
+            );
+
+
+
+
+
+
+
+
+
+
+
 
 
 
